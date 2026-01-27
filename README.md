@@ -1,53 +1,97 @@
-# ComfyUI Sequential Image Loader
+# ComfyUI-SeqImageLoader
 
-## Overview
-This is an extension node for ComfyUI that allows you to load frames from a video in bulk and perform masking and sketching on each frame through a GUI.
+![icon](docs/icon.png)
 
-## Install
-Add this repository to the custom_nodes/ directory.
+A ComfyUI extension node for loading video frames in bulk and performing masking/sketching on each frame through a GUI editor.
 
-## Usage
+## Features
 
-### About "SequentialImageLoader" Node
-This is in the Image category.
+- **Sequential Image Loading**: Load images from a folder sequentially with customizable sorting options
+- **Video Frame Extraction**: Extract frames directly from video files (MP4)
+- **Built-in Mask Editor**: Draw masks and sketches on each frame with an intuitive GUI
+- **Magic Wand Tool**: Quick selection tool for efficient masking
+- **Undo/Redo Support**: Full history support for mask editing
+- **Multiple Sorting Options**: Sort by name, creation time, modification time, or keep original order
 
-#### input
-* sequence_id: Please ignore (used for internal processing only).
-* upload button: Specify the directory containing frames from the video using the dialog.
-(Use ffmpeg or similar to extract frames from the video.)
-* start_index: Specify the start frame number. 0 to disable.
-* end_index: Specify the end frame number. 0 to disable.
-#### output
-* images: Loaded frame data. If sketching is applied, it will be reflected in this output.
-* mask_images: Masks for each frame are output as images. You may need to convert them to mask data using a Mask To Image node, for example.
-* image_count: Number of processed frames.
+![Demo](docs/dogcat.gif)
 
-### About "VideoFrameExtractor" Node
-Instead of specifying a directory containing frames, you specify a video file. Currently, only mp4 format is supported. 
-Otherwise, it is the same as the SequentialImageLoader Node.  
-(I used [getVideoFrames.js](https://github.com/josephrocca/getVideoFrames.js) for extracting frames from MP4)
+## Installation
 
-### About the Mask Editor
-1. After loading the frames, right-click the node and select "Open In MaskEditor".
-2. In the editor that appears, perform masking and sketching as needed. It is based on the standard Mask Editor.
-	
-### Editor Features
-![image](docs/editor_features.png)
-1. Switch between automatic masking (magic wand) and manual masking.
-2. Switch between masking and sketching.
-3. Canvas. Right-click to mask, left-click to unmask.
-4. Change edit frame.
-5. Clear mask on the current frame.
-6. Paste the mask from the previous frame to the current frame.
-7. Change the thickness of the masking.
-8. Undo/Redo operations. Shortcut keys are alt+Z/shift+alt+Z. ( **not Ctrl+Z!** That's the standard shortcuts for ComfyUI. It might cause unexpected behavior.)
-9. Save or cancel the results.
-	
-## Example With AnimateDiff
-![iamge](docs/dogcat.gif)
+### Via ComfyUI Manager (Recommended)
 
-[Workflow](sample_workflows/cat2dog_with_animatediff.json) (It's depend on [ComfyUI-AnimateDiff-Evolved](https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved))  
-[Video source](https://www.pexels.com/video/a-pet-cat-standing-on-the-brick-floor-of-a-garden-3009091/)  
+Search for `SQ-ImageLoader` in ComfyUI Manager and install.
 
-## Other
-Temporary frame data accumulates in the input/ directory, so please delete data that is no longer needed at an appropriate time.
+### Manual Installation
+
+```bash
+cd ComfyUI/custom_nodes
+git clone https://github.com/bruefire/ComfyUI-SeqImageLoader.git
+```
+
+Restart ComfyUI after installation.
+
+## Nodes
+
+### Sequential Image Loader
+
+Load images from a folder one by one, controlled by seed value.
+
+**Inputs:**
+- `folder_path`: Path to the image folder
+- `seed`: Index control (use with seed_mode)
+- `seed_mode`: increment / decrement / randomize / fixed
+- `sort_by`: name / created_time / modified_time / none
+
+**Outputs:**
+- `image`: Current frame image
+- `mask_image`: Mask for the current frame
+- `current_index`: Current image index
+- `total_images`: Total number of images
+- `seed`: Current seed value
+
+### VFrame Loader With Mask Editor
+
+Upload image sequences and edit masks/sketches through the built-in editor.
+
+### Video Loader With Mask Editor
+
+Load video files directly and extract frames for mask editing.
+
+## Mask Editor Usage
+
+1. Right-click on the node and select "Open in MaskEditor"
+2. Use left mouse button to draw mask
+3. Use right mouse button to erase
+4. Use `[` and `]` keys to adjust brush size
+5. Use arrow keys to navigate between frames
+6. Click ✨ to toggle Magic Wand mode
+7. Switch between "inpaint" and "sketch" modes
+
+**Keyboard Shortcuts:**
+- `[` / `]`: Decrease / Increase brush size
+- `←` / `→`: Previous / Next frame
+- `Alt + Z`: Undo
+- `Alt + Shift + Z`: Redo
+- `Enter`: Save
+
+## Supported Formats
+
+**Images:** PNG, JPG, JPEG, BMP, GIF, WEBP
+
+**Videos:** MP4 (and other formats supported by browser)
+
+## Sample Workflows
+
+Check the `sample_workflows` folder for example workflows:
+- `cat2dog_with_animatediff.json`
+- `faceswap_masking_helper.json`
+- `wan_video_wrapper.json`
+
+## License
+
+MIT License - see [LICENSE.txt](LICENSE.txt)
+
+## Links
+
+- [GitHub Repository](https://github.com/bruefire/ComfyUI-SeqImageLoader)
+- [ComfyUI Registry](https://comfyregistry.org)
