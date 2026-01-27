@@ -1,4 +1,3 @@
-[README_CN.md](https://github.com/user-attachments/files/24879601/README_CN.md)
 # SQ-SequentialLoader
 
 ## 简介
