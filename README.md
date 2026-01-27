@@ -1,97 +1,51 @@
-# ComfyUI-SeqImageLoader
+# ComfyUI Sequential Image Loader
 
-![icon](docs/icon.png)
+A ComfyUI custom node for loading images sequentially from a folder.
 
-A ComfyUI extension node for loading video frames in bulk and performing masking/sketching on each frame through a GUI editor.
+一个用于从文件夹顺序加载图片的 ComfyUI 自定义节点。
 
-## Features
+## Features / 功能
 
-- **Sequential Image Loading**: Load images from a folder sequentially with customizable sorting options
-- **Video Frame Extraction**: Extract frames directly from video files (MP4)
-- **Built-in Mask Editor**: Draw masks and sketches on each frame with an intuitive GUI
-- **Magic Wand Tool**: Quick selection tool for efficient masking
-- **Undo/Redo Support**: Full history support for mask editing
-- **Multiple Sorting Options**: Sort by name, creation time, modification time, or keep original order
+- Load images from a specified folder path / 从指定文件夹路径加载图片
+- Seed-based index control for sequential access / 基于种子值控制索引，实现顺序访问
+- Multiple sorting options / 多种排序方式：按名称、创建时间、修改时间或原始顺序
+- Supports formats / 支持格式：PNG, JPG, JPEG, BMP, GIF, WEBP
 
-![Demo](docs/dogcat.gif)
-
-## Installation
-
-### Via ComfyUI Manager (Recommended)
-
-Search for `SQ-ImageLoader` in ComfyUI Manager and install.
-
-### Manual Installation
+## Installation / 安装
 
 ```bash
 cd ComfyUI/custom_nodes
 git clone https://github.com/bruefire/ComfyUI-SeqImageLoader.git
 ```
 
-Restart ComfyUI after installation.
+## Node: Sequential Image Loader / 节点说明
 
-## Nodes
+### Inputs / 输入
 
-### Sequential Image Loader
+| Parameter | Type | Description / 说明 |
+|-----------|------|-------------|
+| folder_path | STRING | Path to image folder / 图片文件夹路径 |
+| seed | INT | Index control value / 索引控制值 (0 ~ max) |
+| seed_mode | LIST | increment / decrement / randomize / fixed |
+| sort_by | LIST | name / created_time / modified_time / none |
 
-Load images from a folder one by one, controlled by seed value.
+### Outputs / 输出
 
-**Inputs:**
-- `folder_path`: Path to the image folder
-- `seed`: Index control (use with seed_mode)
-- `seed_mode`: increment / decrement / randomize / fixed
-- `sort_by`: name / created_time / modified_time / none
+| Output | Type | Description / 说明 |
+|--------|------|-------------|
+| image | IMAGE | Current loaded image / 当前加载的图片 |
+| mask_image | IMAGE | Empty mask (all zeros) / 空遮罩（全零） |
+| current_index | INT | Current image index / 当前图片索引 |
+| total_images | INT | Total images in folder / 文件夹中图片总数 |
+| seed | INT | Current seed value / 当前种子值 |
 
-**Outputs:**
-- `image`: Current frame image
-- `mask_image`: Mask for the current frame
-- `current_index`: Current image index
-- `total_images`: Total number of images
-- `seed`: Current seed value
+## Usage / 使用方法
 
-### VFrame Loader With Mask Editor
+1. Add "Sequential Image Loader" node (Category: SQ) / 添加节点（分类：SQ）
+2. Set `folder_path` to your image directory / 设置图片文件夹路径
+3. Use `seed` to control which image to load (index = seed % total_images) / 使用种子值控制加载哪张图片
+4. Choose `sort_by` to determine image ordering / 选择排序方式
 
-Upload image sequences and edit masks/sketches through the built-in editor.
+## License / 许可证
 
-### Video Loader With Mask Editor
-
-Load video files directly and extract frames for mask editing.
-
-## Mask Editor Usage
-
-1. Right-click on the node and select "Open in MaskEditor"
-2. Use left mouse button to draw mask
-3. Use right mouse button to erase
-4. Use `[` and `]` keys to adjust brush size
-5. Use arrow keys to navigate between frames
-6. Click ✨ to toggle Magic Wand mode
-7. Switch between "inpaint" and "sketch" modes
-
-**Keyboard Shortcuts:**
-- `[` / `]`: Decrease / Increase brush size
-- `←` / `→`: Previous / Next frame
-- `Alt + Z`: Undo
-- `Alt + Shift + Z`: Redo
-- `Enter`: Save
-
-## Supported Formats
-
-**Images:** PNG, JPG, JPEG, BMP, GIF, WEBP
-
-**Videos:** MP4 (and other formats supported by browser)
-
-## Sample Workflows
-
-Check the `sample_workflows` folder for example workflows:
-- `cat2dog_with_animatediff.json`
-- `faceswap_masking_helper.json`
-- `wan_video_wrapper.json`
-
-## License
-
-MIT License - see [LICENSE.txt](LICENSE.txt)
-
-## Links
-
-- [GitHub Repository](https://github.com/bruefire/ComfyUI-SeqImageLoader)
-- [ComfyUI Registry](https://comfyregistry.org)
+MIT License
