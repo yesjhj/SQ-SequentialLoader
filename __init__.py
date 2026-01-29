@@ -1,14 +1,17 @@
 import os, shutil
 import folder_paths
 from .SequentialImageLoader import LoadImagesSequentially
+from .VideoFileLoader import LoadVideoFile
 
 
 NODE_CLASS_MAPPINGS = {
     "Sequential Image Loader": LoadImagesSequentially,
+    "Video File Loader": LoadVideoFile,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "Sequential Image Loader": "SQ-SequentialLoader",
+    "Video File Loader": "SQ-VideoFileLoader",
 }
 
 WEB_DIRECTORY = "./js"
