@@ -1,4 +1,4 @@
-# SQ-ImageLoader
+# SQ-SequentialLoader
 
 ComfyUI 自定义节点插件，提供顺序加载图片和视频的功能。
 
